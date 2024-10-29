@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:11:09 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/29 04:25:56 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/29 05:13:03 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_device
 	unsigned char	ip_addr[IPv4_BINLENGTH];
 	unsigned char	mac_addr[MAC_BINLENGTH];
 	char			ip_str[IPv4_LENGTH];
+	char			hostname[MAX_HOSTNAME];
 }	t_device;
 
 typedef struct s_malcolm

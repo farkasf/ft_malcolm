@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:12:05 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/29 04:38:31 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/29 05:43:41 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	main(int ac, char **av)
 	if (parse_args(&malcolm, ac, av) == NON_VALID)
 		return (EXIT_FAILURE);
 
+	printf("%s | %s\n", malcolm.source.hostname, malcolm.target.hostname);
 	printf("verbose: %d | gratuitous: %d | timeout: %d\n", malcolm.options.verbose, malcolm.options.gratuitous, malcolm.options.timeout);
 
 	return (EXIT_SUCCESS);

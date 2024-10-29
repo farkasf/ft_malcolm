@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 04:21:30 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/29 04:23:07 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/29 05:34:35 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	fetch_ip_addr(char *input, t_device *device, int pos)
 	struct sockaddr_in	*addr_in;
 
 	if (resolve_host(input, &res) == NON_VALID)
-		return (print_args_error("%sft_malcolm:%s temporary failure in hostname `%s' resolution (argc %d)\n", RED, NC, input, pos));
+		return (print_args_error("%sft_malcolm:%s failed to retrieve address info for `%s' (argc %d)\n", RED, NC, input, pos));
 
 	if (res->ai_addrlen != IPv4_LENGTH)
 	{

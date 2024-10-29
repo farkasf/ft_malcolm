@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 05:35:04 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/29 04:34:19 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/29 05:44:08 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ static int	handle_options(t_options *ops, int ac, char **av)
 
 static int	convert_addr(char type, t_device *device, char *addr, int i)
 {
-	int	ret;
+	struct hostent	*hostname;
+	int				ret;
 
 	if (type == 'i')
 	{
@@ -80,6 +81,11 @@ static int	convert_addr(char type, t_device *device, char *addr, int i)
 		{
 			if (!inet_pton(AF_INET, device->ip_str, device->ip_addr))
 				return (print_args_error("%sft_malcolm:%s failed to convert IPv4 address into binary format `%s' (argc %d)\n", RED, NC, addr, i));
+			hostname = gethostbyaddr(device->ip_addr, IPv4_BINLENGTH, AF_INET);
+			if (hostname)
+				ft_strlcpy(device->hostname, hostname->h_name, MAX_HOSTNAME);
+			else
+				ft_strlcpy(device->hostname, addr, MAX_HOSTNAME);
 		}
 		else if (ret == MSG_PRINTED)
 			return (NON_VALID);
