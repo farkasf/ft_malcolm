@@ -2,8 +2,8 @@ NAME = ft_malcolm
 LIBFT = ./libft/libft.a
 SRC =	./src/ft_malcolm.c \
 		./src/parser.c \
-		./src/check_addr.c \
-		./src/network.c \
+		./src/parse_ip.c \
+		./src/parse_mac.c \
 		./src/utils.c
 OBJS = $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror

@@ -1,38 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_addr.c                                       :+:      :+:    :+:   */
+/*   parse_ip.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 04:21:30 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/29 03:32:23 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/29 04:23:07 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_malcolm.h"
 
-int	is_valid_mac(char *input)
+static int	resolve_host(char *hostname, struct addrinfo **res)
 {
-	int	i;
+	struct addrinfo	hints;
 
-	i = 0;
-	if (ft_strlen(input) != 17)
+	*res = NULL;
+	ft_memset(&hints, 0, sizeof(hints));
+
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = 0;
+
+	if (getaddrinfo(hostname, NULL, &hints, res) == -1 || *res == NULL)
 		return (NON_VALID);
-	while (input[i])
+	return (VALID);
+}
+
+static int	fetch_ip_addr(char *input, t_device *device, int pos)
+{
+	struct addrinfo		*res;
+	struct sockaddr_in	*addr_in;
+
+	if (resolve_host(input, &res) == NON_VALID)
+		return (print_args_error("%sft_malcolm:%s temporary failure in hostname `%s' resolution (argc %d)\n", RED, NC, input, pos));
+
+	if (res->ai_addrlen != IPv4_LENGTH)
 	{
-		if (i % 3 == 2)
-		{
-			if (input[i] != ':')
-				return (NON_VALID);
-		}
-		else
-		{
-			if (!ft_isxdigit(input[i]))
-				return (NON_VALID);
-		}
-		i++;
+		freeaddrinfo(res);
+		return (print_args_error("%sft_malcolm:%s address length mismatch `%s' (argc %d)\n", RED, NC, input, pos));
 	}
+
+	addr_in = (struct sockaddr_in *)res->ai_addr;
+	ft_strlcpy(device->ip_str, inet_ntoa(addr_in->sin_addr), IPv4_LENGTH);
+	freeaddrinfo(res);
 	return (VALID);
 }
 

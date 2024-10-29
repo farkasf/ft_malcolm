@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:12:05 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/29 03:32:37 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/29 04:38:31 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,6 @@ int	main(int ac, char **av)
 		return (EXIT_FAILURE);
 
 	printf("verbose: %d | gratuitous: %d | timeout: %d\n", malcolm.options.verbose, malcolm.options.gratuitous, malcolm.options.timeout);
+
+	return (EXIT_SUCCESS);
 }

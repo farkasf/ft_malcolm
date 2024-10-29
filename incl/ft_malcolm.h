@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:11:09 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/29 03:27:57 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/29 04:25:56 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_options
 typedef struct s_device
 {
 	unsigned char	ip_addr[IPv4_BINLENGTH];
-	unsigned char	*mac_addr[MAC_BINLENGTH];
+	unsigned char	mac_addr[MAC_BINLENGTH];
 	char			ip_str[IPv4_LENGTH];
 }	t_device;
 
@@ -66,9 +66,8 @@ int		check_uid(void);
 
 int		parse_args(t_malcolm *malcolm, int ac, char **av);
 
-int		is_valid_mac(char *input);
-int		is_valid_ipv4_or_hostname(char *input, t_device *device, int pos);
+int		is_valid_mac(char *input, t_device *device);
 
-int		fetch_ip_addr(char *input, t_device *device, int pos);
+int		is_valid_ipv4_or_hostname(char *input, t_device *device, int pos);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 05:35:04 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/29 03:33:25 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/29 04:34:19 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,8 @@ static int	convert_addr(char type, t_device *device, char *addr, int i)
 	}
 	else if (type == 'm')
 	{
-		if (is_valid_mac(addr) == VALID)
-		{
-			printf("VALID MAC\n");
-		}
+		if (is_valid_mac(addr, device) == VALID)
+			return (VALID);
 		else
 			return (print_args_error("%sft_malcolm:%s invalid MAC address format `%s' (argc %d)\n", RED, NC, addr));
 	}
