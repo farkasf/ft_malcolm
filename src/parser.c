@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 05:35:04 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/29 05:44:08 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/29 20:11:44 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int set_timeout(int *i, int ac, char *value)
 	{
 		timeout = ft_atoi(value);
 		if (timeout < 1 || timeout > 300)
-			return (print_args_error("%sft_malcolm:%s timeout out of range\n", RED, NC));
+			return (print_args_error("%sft_malcolm:%s timeout out of range (1-300 seconds)\n", RED, NC));
 	}
 	else
 	{
@@ -97,7 +97,7 @@ static int	convert_addr(char type, t_device *device, char *addr, int i)
 		if (is_valid_mac(addr, device) == VALID)
 			return (VALID);
 		else
-			return (print_args_error("%sft_malcolm:%s invalid MAC address format `%s' (argc %d)\n", RED, NC, addr));
+			return (print_args_error("%sft_malcolm:%s invalid MAC address format `%s' (argc %d)\n", RED, NC, addr, i));
 	}
 	return (VALID);
 }

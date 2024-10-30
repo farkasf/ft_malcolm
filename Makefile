@@ -4,6 +4,8 @@ SRC =	./src/ft_malcolm.c \
 		./src/parser.c \
 		./src/parse_ip.c \
 		./src/parse_mac.c \
+		./src/malcolm.c \
+		./src/interface.c \
 		./src/utils.c
 OBJS = $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
