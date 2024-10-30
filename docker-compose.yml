@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  malcolm:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.malcolm
+    container_name: malcolm
+    networks:
+      malcolm_net:
+        ipv4_address: 172.19.0.2
+    volumes:
+      - ./ft_malcolm:/ft_malcolm
+
+  source:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.containers
+    container_name: source
+    networks:
+      malcolm_net:
+        ipv4_address: 172.19.0.3
+
+  target:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.containers
+    container_name: target
+    networks:
+      malcolm_net:
+        ipv4_address: 172.19.0.4
+
+  destination:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.containers
+    container_name: destination
+    networks:
+      malcolm_net:
+        ipv4_address: 172.19.0.5
+
+networks:
+  malcolm_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/29
