@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:11:09 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 03:07:15 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/31 06:59:19 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # include <netinet/if_ether.h>
 # include <netpacket/packet.h>
 
-# define BL     "\033[0;36m"
+# define BL     "\033[1;36m"
 # define RD     "\033[1;31m"
 # define GR     "\033[1;32m"
 # define YL     "\033[1;33m"
@@ -49,6 +49,7 @@
 
 # define IPv4_LENGTH    16
 # define IPv4_BINLENGTH 4
+# define MAC_LENGTH     18
 # define MAC_BINLENGTH  6
 # define MAX_HOSTNAME   253
 # define MAX_INTERFACE  16
@@ -112,6 +113,12 @@ int		spoof_run(t_malcolm *malcolm);
 
 int		setup_socket(t_malcolm *malcolm);
 
-void	print_timeout(int iter, int timeout);
+void	format_mac(unsigned char *mac, char *out);
+void	format_ip(unsigned char *ip, char *out);
+void	format_host(unsigned char *ip, char *out);
+
+void	print_request(t_malcolm *malcolm);
+void	print_eth_info(struct ethhdr *eth_header);
+void	print_arp_info(t_packet *packet);
 
 #endif

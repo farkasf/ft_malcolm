@@ -8,6 +8,7 @@ SRC =	./src/ft_malcolm.c \
 		./src/interface.c \
 		./src/socket.c \
 		./src/log_utils.c \
+		./src/log.c \
 		./src/utils.c
 OBJS = $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror

@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 05:35:04 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 01:01:45 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/31 06:58:25 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	handle_options(t_options *ops, int ac, char **av)
 	int	i;
 
 	i = 5;
-	ops->timeout = 5;
+	ops->timeout = 3;
 	while (i < ac)
 	{
 		if (av[i][0] == '-')

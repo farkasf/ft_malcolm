@@ -31,21 +31,22 @@ An introduction to Man in the Middle attacks.
 5. [✅] **implement signal handling**
    * exit gracefully on `SIGINT` and ensure resources are properly freed
 
-6. [✅] **wait for the arp request**
+6. [✅] **wait for the ARP request**
    * set up the socket and sending interface for the ARP protocol
    * wait for an ARP request broadcast from the target IP
 
-7. [✅] **set timeout for arp requests**
+7. [✅] **set timeout for ARP requests**
    * use `-t TIMEOUT` to define a timeout period (in seconds) for waiting for an ARP request
 
-8. [❌] **initialize arp packet**
+8. [❌] **ARP packet handling**
+   * analyze received ARP request packet
    * set up ARP reply packet
    * send an ARP reply with spoofed source information upon receiving a request
 
 9. [❌] **implement verbose output**
    * if `-v` is set, print packet details, including source and target IP/MAC addresses
 
-10. [❌] **send gratuitous arp broadcast (if `-g` is set)**
+10. [❌] **send gratuitous ARP broadcast (if `-g` is set)**
    * if `-g` is provided, broadcast an ARP packet to announce the spoofed IP and MAC association
 
 11. [❌] **define exit conditions**

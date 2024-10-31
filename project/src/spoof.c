@@ -6,11 +6,28 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:48:56 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 03:12:39 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/31 07:03:25 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_malcolm.h"
+
+int	analyze_broadcast(t_malcolm *malcolm, unsigned char *buffer)
+{
+	struct ethhdr	*eth_header;
+
+	eth_header = (struct ethhdr *)buffer;
+	malcolm->packet = *(t_packet *)(buffer + sizeof(struct ethhdr));
+	if (ntohs(malcolm->packet.header.ar_op) != 1)
+		return (NON_VALID);
+	print_request(malcolm);
+	if (malcolm->options.verbose)
+	{
+		print_eth_info(eth_header);
+		print_arp_info(&malcolm->packet);
+	}
+	return (VALID);
+}
 
 int	listen_to_broadcast(t_malcolm *malcolm)
 {
@@ -18,13 +35,12 @@ int	listen_to_broadcast(t_malcolm *malcolm)
 	socklen_t			addr_size;
 	ssize_t				recv_bytes;
 	unsigned char		buffer[sizeof(struct ethhdr) + sizeof(t_packet)];
-	int					iter;
 
-	iter = 0;
 	addr_size = sizeof(recv_addr);
+	ft_memset(buffer, 0, sizeof(buffer));
+	ft_memset(&recv_addr, 0, sizeof(recv_addr));
 	while (g_sig_status)
 	{
-		iter++;
 		recv_bytes = recvfrom(malcolm->spoof.socket_fd, &buffer, sizeof(buffer), 0, (struct sockaddr *)&recv_addr, &addr_size);
 		if (recv_bytes == -1)
 		{
@@ -33,14 +49,15 @@ int	listen_to_broadcast(t_malcolm *malcolm)
 			else if (errno == EAGAIN || errno == EWOULDBLOCK)
 			{
 				if (malcolm->options.verbose)
-					print_timeout(iter, malcolm->options.timeout);
+					dprintf(STDOUT_FILENO, "\n%s%sTIMEOUT:%s no packets received [%s]\n", PAD, BL, NC, fetch_time());
 				continue ;
 			}
 			return (print_args_error("%sft_malcolm:%s packet receiving failed\n", RD, NC));
 		}
 		if (ft_memcmp(buffer, "\xff\xff\xff\xff\xff\xff", 6) == 0)
 		{
-			dprintf(STDOUT_FILENO, "\n%sft_malcolm:%s an ARP request has been broadcast [%s]\n", YL, NC, fetch_time());
+			if (analyze_broadcast(malcolm, buffer) == NON_VALID)
+				continue ;
 			return (VALID);
 		}
 	}

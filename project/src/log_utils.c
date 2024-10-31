@@ -6,21 +6,29 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 03:06:43 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 03:07:40 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/31 07:06:09 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_malcolm.h"
 
-void	print_timeout(int iter, int timeout)
+void	format_mac(unsigned char *mac, char *out)
 {
-	int	interval;
+	snprintf(out, MAC_LENGTH, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+}
 
-	if (timeout < 3)
-		interval = timeout * 3;
+void	format_ip(unsigned char *ip, char *out)
+{
+	snprintf(out, IPv4_LENGTH, "%u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
+}
+
+void	format_host(unsigned char *ip, char *out)
+{
+	struct hostent	*hostname;
+
+	hostname = gethostbyaddr(ip, IPv4_BINLENGTH, AF_INET);
+	if (hostname)
+		ft_strlcpy(out, hostname->h_name, MAX_HOSTNAME);
 	else
-		interval = timeout;
-	if (iter % interval != 0)
-		return ;
-	dprintf(STDOUT_FILENO, "%s%sTIMEOUT:%s no packets received (%d iters) [%s]\n", PAD, BL, NC, iter, fetch_time());
+		snprintf(out, MAX_HOSTNAME, "%u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
 }

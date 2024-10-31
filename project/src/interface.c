@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:59:30 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 02:51:18 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/31 07:01:41 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	fetch_interface(t_malcolm *malcolm)
 			netmask_addr = (struct sockaddr_in *)ifa->ifa_netmask;
 			if (is_ip_in_range(addr->sin_addr.s_addr, netmask_addr->sin_addr.s_addr, malcolm) == VALID)
 			{
-				dprintf(STDOUT_FILENO, "%sft_malcolm:%s found available interface: %s\n\n", YL, NC, ifa->ifa_name);
+				dprintf(STDOUT_FILENO, "%sft_malcolm:%s found available interface: %s\n", YL, NC, ifa->ifa_name);
 				ft_strlcpy(malcolm->interface, ifa->ifa_name, MAX_INTERFACE);
 				freeifaddrs(ifaddr);
 				return (VALID);	
