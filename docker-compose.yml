@@ -10,7 +10,7 @@ services:
       malcolm_net:
         ipv4_address: 172.19.0.2
     volumes:
-      - ./ft_malcolm:/ft_malcolm
+      - ./project:/project
 
   source:
     build:

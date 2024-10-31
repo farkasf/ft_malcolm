@@ -4,6 +4,6 @@ RUN apt-get update && \
     apt-get install -y build-essential nano valgrind iputils-ping iproute2 && \
     rm -rf /var/lib/apt/lists/*
 
-WORKDIR /ft_malcolm
+WORKDIR /project
 
 CMD ["sleep", "infinity"]

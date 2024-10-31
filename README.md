@@ -28,11 +28,11 @@ An introduction to Man in the Middle attacks.
 4. [✅] **identify and select an available network interface**
    * check for an available network interface
 
-5. [❌] **implement signal handling**
+5. [✅] **implement signal handling**
    * exit gracefully on `SIGINT` and ensure resources are properly freed
 
 6. [❌] **wait for the arp request**
-   * set up the sockets for the ARP protocol
+   * set up the socket and sending interface for the ARP protocol
    * wait for an ARP request broadcast from the target IP
 
 7. [❌] **set timeout for arp requests**
