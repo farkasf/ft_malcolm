@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:11:09 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 00:41:20 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/31 03:07:15 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 
 # include <errno.h>
 # include <sys/time.h>
+# include <time.h>
 # include <signal.h>
 
 # include <arpa/inet.h>
@@ -35,11 +36,12 @@
 # include <netinet/if_ether.h>
 # include <netpacket/packet.h>
 
-# define BL     "\033[0;34m"
+# define BL     "\033[0;36m"
 # define RD     "\033[1;31m"
 # define GR     "\033[1;32m"
-# define YL     "\033[0;33m"
+# define YL     "\033[1;33m"
 # define NC     "\033[0m"
+# define PAD    "     "
 
 # define VALID          1
 # define NON_VALID      -1
@@ -74,15 +76,26 @@ typedef struct s_spoof
 	int					socket_fd;
 }	t_spoof;
 
+typedef struct s_packet
+{
+	struct arphdr	header;
+	unsigned char	source_mac[MAC_BINLENGTH];
+	unsigned char	source_ip[IPv4_BINLENGTH];
+	unsigned char	target_mac[MAC_BINLENGTH];
+	unsigned char	target_ip[IPv4_BINLENGTH];
+}	t_packet;
+
 typedef struct s_malcolm
 {
 	t_options	options;
 	t_device	source;
 	t_device	target;
 	t_spoof		spoof;
+	t_packet	packet;
 	char		interface[MAX_INTERFACE];
 }	t_malcolm;
 
+char	*fetch_time(void);
 int		print_args_error(const char *msg, ...);
 int		print_usage(char *prog_name, int status);
 int		check_uid(void);
@@ -98,5 +111,7 @@ int		fetch_interface(t_malcolm *malcolm);
 int		spoof_run(t_malcolm *malcolm);
 
 int		setup_socket(t_malcolm *malcolm);
+
+void	print_timeout(int iter, int timeout);
 
 #endif

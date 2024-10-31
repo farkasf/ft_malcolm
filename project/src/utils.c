@@ -6,11 +6,23 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:51:56 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/30 22:15:50 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/31 03:05:48 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_malcolm.h"
+
+char	*fetch_time(void)
+{
+	static char	time_buff[20];
+	time_t		now;
+	struct tm	*local;
+
+	now = time(NULL);
+	local = localtime(&now);
+	strftime(time_buff, sizeof(time_buff), "%Y-%m-%d %H:%M:%S", local);
+	return (time_buff);
+}
 
 int	print_args_error(const char *msg, ...)
 {
