@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:11:09 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 06:59:19 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/31 23:55:57 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define YL     "\033[1;33m"
 # define NC     "\033[0m"
 # define PAD    "     "
+# define DPAD    "          "
 
 # define VALID          1
 # define NON_VALID      -1
@@ -86,39 +87,50 @@ typedef struct s_packet
 	unsigned char	target_ip[IPv4_BINLENGTH];
 }	t_packet;
 
+typedef struct s_inferface
+{
+	char			int_name[MAX_INTERFACE];
+	unsigned int	index;
+	unsigned char	gateway[IPv4_BINLENGTH];
+	unsigned char	netmask[IPv4_BINLENGTH];
+}	t_interface;
+
 typedef struct s_malcolm
 {
-	t_options	options;
-	t_device	source;
-	t_device	target;
-	t_spoof		spoof;
-	t_packet	packet;
-	char		interface[MAX_INTERFACE];
+	t_options		options;
+	t_device		source;
+	t_device		target;
+	t_spoof			spoof;
+	t_interface		interface;
+	t_packet		packet;
 }	t_malcolm;
 
-char	*fetch_time(void);
-int		print_args_error(const char *msg, ...);
-int		print_usage(char *prog_name, int status);
-int		check_uid(void);
+char		*fetch_time(void);
+int			print_args_error(const char *msg, ...);
+int			print_usage(char *prog_name, int status);
+int			check_uid(void);
 
-int		parse_args(t_malcolm *malcolm, int ac, char **av);
+int			parse_args(t_malcolm *malcolm, int ac, char **av);
 
-int		is_valid_mac(char *input, t_device *device);
+int			is_valid_mac(char *input, t_device *device);
 
-int		is_valid_ipv4_or_hostname(char *input, t_device *device, int pos);
+int			is_valid_ipv4_or_hostname(char *input, t_device *device, int pos);
 
-int		fetch_interface(t_malcolm *malcolm);
+int			fetch_interface(t_malcolm *malcolm);
 
-int		spoof_run(t_malcolm *malcolm);
+int			mitm_run(t_malcolm *malcolm);
 
-int		setup_socket(t_malcolm *malcolm);
+int			setup_socket(t_malcolm *malcolm);
 
-void	format_mac(unsigned char *mac, char *out);
-void	format_ip(unsigned char *ip, char *out);
-void	format_host(unsigned char *ip, char *out);
+void		format_mac(unsigned char *mac, char *out);
+void		format_ip(unsigned char *ip, char *out);
+void		format_host(unsigned char *ip, char *out);
+uint32_t	format_ip_dec(unsigned char *ip);
 
-void	print_request(t_malcolm *malcolm);
-void	print_eth_info(struct ethhdr *eth_header);
-void	print_arp_info(t_packet *packet);
+void		print_interface(t_malcolm *malcolm);
+void		print_start(t_malcolm *malcolm);
+void		print_request(t_malcolm *malcolm);
+void		print_eth_info(struct ethhdr *eth_header);
+void		print_arp_info(t_packet *packet);
 
 #endif

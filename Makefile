@@ -34,6 +34,11 @@ table:
 	@echo "$(BL)Displaying ARP table of the target:$(NC)"
 	docker exec -it target arp -a
 
+clean:
+	@echo "$(BL)Cleaning ARP table of the target...$(NC)"
+	docker exec -it --privileged target arp -d 172.19.0.5 || true
+	docker exec -it --privileged target arp -d 172.19.0.1 || true
+
 ping:
 	@echo "$(BL)Pinging test container from the target container...$(NC)"
 	docker exec -it target ping -c 1 172.19.0.5

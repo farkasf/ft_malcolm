@@ -6,11 +6,44 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 05:20:45 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 07:06:05 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/31 23:56:38 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_malcolm.h"
+
+void	print_interface(t_malcolm *malcolm)
+{
+	char			gateway[IPv4_LENGTH];
+	char			netmask[IPv4_LENGTH];
+
+	format_ip(malcolm->interface.gateway, gateway);
+	format_ip(malcolm->interface.netmask, netmask);
+	dprintf(STDOUT_FILENO, 
+		"%s%sINTERFACE INFO%s\n"
+		"%s* interface index: %u\n"
+		"%s* gateway: %s\n"
+		"%s* netmask: %s\n\n"
+		, PAD, BL, NC, PAD, malcolm->interface.index, PAD, gateway, PAD, netmask);
+}
+
+void	print_start(t_malcolm *malcolm)
+{
+	char	source_mac[MAC_LENGTH];
+	char	target_mac[MAC_LENGTH];
+
+	format_mac(malcolm->source.mac_addr, source_mac);
+	format_mac(malcolm->target.mac_addr, target_mac);
+	dprintf(STDOUT_FILENO, 
+		"%s%sINPUT INFO%s\n"
+		"%s* source IP address: %s (%u) => %s\n"
+		"%s* source MAC address: %s\n"
+		"%s* target IP address: %s (%u) => %s\n"
+		"%s* target MAC address: %s\n\n"
+		, PAD, BL, NC, PAD, malcolm->source.ip_str, format_ip_dec(malcolm->source.ip_addr) \
+		, malcolm->source.hostname, PAD, source_mac, PAD, malcolm->target.ip_str \
+		, format_ip_dec(malcolm->target.ip_addr), malcolm->target.hostname, PAD, target_mac);
+}
 
 void	print_eth_info(struct ethhdr *eth_header)
 {
@@ -58,10 +91,11 @@ void	print_request(t_malcolm *malcolm)
 	dprintf(STDOUT_FILENO, 
 		"%s\nft_malcolm:%s an ARP request has been broadcast [%s]\n\n"
 		"%s%sARP PACKET%s\n"
-		"%s* source IP address: %s (%s)\n"
+		"%s* source IP address: %s (%u) => %s\n"
 		"%s* source MAC address: %s\n"
-		"%s* target IP address: %s (%s)\n"
+		"%s* target IP address: %s (%u) => %s\n"
 		"%s* target MAC address: %s\n\n"
-		, YL, NC, fetch_time(), PAD, BL, NC, PAD, source_ip, source_name, PAD, source_mac, PAD, target_ip \
+		, YL, NC, fetch_time(), PAD, BL, NC, PAD, source_ip, format_ip_dec(malcolm->packet.source_ip) \
+		, source_name, PAD, source_mac, PAD, target_ip, format_ip_dec(malcolm->packet.target_ip) \
 		, target_name, PAD, target_mac);
 }

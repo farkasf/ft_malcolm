@@ -4,7 +4,7 @@ SRC =	./src/ft_malcolm.c \
 		./src/parser.c \
 		./src/parse_ip.c \
 		./src/parse_mac.c \
-		./src/spoof.c \
+		./src/mitm.c \
 		./src/interface.c \
 		./src/socket.c \
 		./src/log_utils.c \

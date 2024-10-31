@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   spoof.c                                            :+:      :+:    :+:   */
+/*   mitm.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:48:56 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 07:03:25 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/10/31 23:38:54 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,16 +64,24 @@ int	listen_to_broadcast(t_malcolm *malcolm)
 	return (VALID);
 }
 
-int	spoof_run(t_malcolm *malcolm)
+int	mitm_run(t_malcolm *malcolm)
 {
+	dprintf(STDOUT_FILENO, "%sft_malcolm:%s starting...\n\n", GR, NC);
+	if (malcolm->options.verbose)
+		print_start(malcolm);
+
 	if (fetch_interface(malcolm) == NON_VALID)
 		return (print_args_error("%sft_malcolm:%s no matching interface found\n", RD, NC));
 	
 	if (setup_socket(malcolm) == NON_VALID)
 		return (NON_VALID);
 
+	dprintf(STDOUT_FILENO, "%sft_malcolm:%s intercepting broadcast...\n", GR, NC);
 	if (listen_to_broadcast(malcolm) == NON_VALID)
-		return (NON_VALID);
+	{
+		close(malcolm->spoof.socket_fd);
+		return (NON_VALID);	
+	}
 
 	return (VALID);
 }
