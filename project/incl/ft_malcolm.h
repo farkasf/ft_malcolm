@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:11:09 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 05:05:13 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 07:48:56 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,12 @@
 # define MAX_HOSTNAME    253
 # define MAX_INTERFACE   16
 
-# define FRAME_CHECK_SEQ     4
-# define ETH_PROTOCOL_ARP    0x0806
-# define ARP_HARDWARE_ETH    1
-# define ARP_PROTOCOL_IP     0x0800
-# define ARP_OPERATION_REPLY 2
+# define FRAME_CHECK_SEQ  4
+# define ETH_PROTOCOL_ARP 0x0806
+# define ARP_HARDWARE_ETH 1
+# define ARP_PROTOCOL_IP  0x0800
+# define ARP_OP_REQUEST   1
+# define ARP_OP_REPLY     2
 
 # define BROADCAST      "\xff\xff\xff\xff\xff\xff"
 
@@ -83,7 +84,6 @@ typedef struct s_device
 typedef struct s_spoof
 {
 	struct sockaddr_ll	socket_addr;
-	unsigned char		ip_addr[IPv4_BINLENGTH];
 	int					socket_fd;
 }	t_spoof;
 
@@ -139,7 +139,7 @@ uint32_t	format_ip_dec(unsigned char *ip);
 
 void		print_interface(t_malcolm *malcolm);
 void		print_start(t_malcolm *malcolm);
-void		print_packet_info(t_packet *packet, char mode);
+void		print_packet_info(t_packet *packet, int operation);
 void		print_eth_info(struct ethhdr *eth_header);
 void		print_arp_info(t_packet *packet);
 

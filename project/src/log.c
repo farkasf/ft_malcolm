@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 05:20:45 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 03:53:53 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 07:50:28 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	print_arp_info(t_packet *packet)
 		, packet->header.ar_hln, PAD, packet->header.ar_pln, PAD, htons(packet->header.ar_op));
 }
 
-void	print_packet_info(t_packet *packet, char mode)
+void	print_packet_info(t_packet *packet, int operation)
 {
 	char	source_mac[MAC_LENGTH];
 	char	source_ip[IPv4_LENGTH];
@@ -88,7 +88,7 @@ void	print_packet_info(t_packet *packet, char mode)
 	format_ip(packet->target_ip, target_ip);
 	format_host(packet->source_ip, source_name);
 	format_host(packet->target_ip, target_name);
-	if (mode == '1')
+	if (operation == ARP_OP_REQUEST)
 		dprintf(STDOUT_FILENO, "%s%sARP REQUEST PACKET%s\n", PAD, BL, NC);
 	else
 		dprintf(STDOUT_FILENO, "%s%sARP REPLY PACKET%s\n", PAD, BL, NC);

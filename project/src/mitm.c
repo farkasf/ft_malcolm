@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:48:56 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 05:05:58 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 07:56:34 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	analyze_broadcast(t_malcolm *malcolm, unsigned char *buffer)
 
 	eth_header = (struct ethhdr *)buffer;
 	malcolm->packet = *(t_packet *)(buffer + sizeof(struct ethhdr));
-	if (ntohs(malcolm->packet.header.ar_op) != 1)
+	if (ntohs(malcolm->packet.header.ar_op) != ARP_OP_REQUEST)
 		return (NON_VALID);
 	dprintf(STDOUT_FILENO, "%s\nft_malcolm:%s an ARP request has been broadcast [%s]\n\n", YL, NC, fetch_time());
 	if (malcolm->options.verbose)
@@ -26,8 +26,7 @@ int	analyze_broadcast(t_malcolm *malcolm, unsigned char *buffer)
 		print_eth_info(eth_header);
 		print_arp_info(&malcolm->packet);
 	}
-	print_packet_info(&malcolm->packet, '1');
-	ft_memcpy(malcolm->spoof.ip_addr, malcolm->packet.target_ip, IPv4_BINLENGTH);
+	print_packet_info(&malcolm->packet, ARP_OP_REQUEST);
 	return (VALID);
 }
 
@@ -41,7 +40,7 @@ int	listen_to_broadcast(t_malcolm *malcolm)
 	addr_size = sizeof(recv_addr);
 	ft_memset(buffer, 0, sizeof(buffer));
 	ft_memset(&recv_addr, 0, sizeof(recv_addr));
-	dprintf(STDOUT_FILENO, "%sft_malcolm:%s intercepting broadcast...\n", GR, NC);
+	dprintf(STDOUT_FILENO, "%sft_malcolm:%s intercepting ARP broadcast\n", GR, NC);
 	while (g_sig_status)
 	{
 		recv_bytes = recvfrom(malcolm->spoof.socket_fd, &buffer, sizeof(buffer), 0, (struct sockaddr *)&recv_addr, &addr_size);
@@ -70,7 +69,7 @@ int	listen_to_broadcast(t_malcolm *malcolm)
 
 int	mitm_run(t_malcolm *malcolm)
 {
-	dprintf(STDOUT_FILENO, "%sft_malcolm:%s starting...\n\n", GR, NC);
+	dprintf(STDOUT_FILENO, "%sft_malcolm:%s starting ARP spoofing engine\n\n", GR, NC);
 	if (malcolm->options.verbose)
 		print_start(malcolm);
 
@@ -83,7 +82,7 @@ int	mitm_run(t_malcolm *malcolm)
 	if (!malcolm->options.gratuitous && listen_to_broadcast(malcolm) == NON_VALID)
 		return (NON_VALID);	
 
-	if (send_arp_reply(malcolm) == NON_VALID)
+	if (g_sig_status && send_arp_reply(malcolm) == NON_VALID)
 		return (NON_VALID);
 
 	return (VALID);

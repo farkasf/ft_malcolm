@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:12:05 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 22:36:45 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 07:58:08 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,6 @@ int	main(int ac, char **av)
 	if (mitm_run(&malcolm) == NON_VALID)
 		return (EXIT_FAILURE);
 
-	dprintf(STDERR_FILENO, "\n%sft_malcolm:%s exiting gracefully...\n", GR, NC);
+	dprintf(STDERR_FILENO, "\n%sft_malcolm:%s exiting gracefully\n", GR, NC);
 	return (EXIT_SUCCESS);
 }
