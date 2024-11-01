@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:12:05 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 07:58:08 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:43:09 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int ac, char **av)
 
 	if (check_uid() != VALID)
 		return (EXIT_FAILURE);
-	
+
 	if (ac < 5)
 		return (print_usage(av[0], EXIT_FAILURE));
 

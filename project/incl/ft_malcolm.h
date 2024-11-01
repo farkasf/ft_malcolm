@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:11:09 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 07:48:56 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:52:42 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,35 +114,44 @@ typedef struct s_malcolm
 	t_packet		packet;
 }	t_malcolm;
 
-char		*fetch_time(void);
-int			print_args_error(const char *msg, ...);
-int			print_usage(char *prog_name, int status);
-int			check_uid(void);
-
-int			parse_args(t_malcolm *malcolm, int ac, char **av);
-
-int			is_valid_mac(char *input, t_device *device);
-
-int			is_valid_ipv4_or_hostname(char *input, t_device *device, int pos);
-
+//interface.c
 int			fetch_interface(t_malcolm *malcolm);
 
-int			mitm_run(t_malcolm *malcolm);
-
-int			setup_socket(t_malcolm *malcolm);
-int			configure_sender(struct sockaddr_ll	*socket_addr, t_malcolm *malcolm);
-
+//log_utils.c
 void		format_mac(unsigned char *mac, char *out);
 void		format_ip(unsigned char *ip, char *out);
 void		format_host(unsigned char *ip, char *out);
 uint32_t	format_ip_dec(unsigned char *ip);
 
-void		print_interface(t_malcolm *malcolm);
+//log.c
 void		print_start(t_malcolm *malcolm);
-void		print_packet_info(t_packet *packet, int operation);
+void		print_interface(t_malcolm *malcolm);
 void		print_eth_info(struct ethhdr *eth_header);
 void		print_arp_info(t_packet *packet);
+void		print_packet_info(t_packet *packet, int operation);
 
+//mitm.c
+int			mitm_run(t_malcolm *malcolm);
+
+//packet.c
 int			send_arp_reply(t_malcolm *malcolm);
+
+//parse_ip.c
+int			is_valid_ipv4_or_hostname(char *input, t_device *device, int pos);
+
+//parse_mac.c
+int			is_valid_mac(char *input, t_device *device);
+
+//parser.c
+int			parse_args(t_malcolm *malcolm, int ac, char **av);
+
+//socket.c
+int			setup_socket(t_malcolm *malcolm);
+
+//utils.c
+char		*fetch_time(void);
+int			print_args_error(const char *msg, ...);
+int			check_uid(void);
+int			print_usage(char *prog_name, int status);
 
 #endif

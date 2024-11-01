@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 00:51:56 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 03:05:48 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:46:04 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*fetch_time(void)
 int	print_args_error(const char *msg, ...)
 {
 	va_list	args_list;
-	
+
 	va_start(args_list, msg);
 	vdprintf(STDERR_FILENO, msg, args_list);
 	va_end(args_list);

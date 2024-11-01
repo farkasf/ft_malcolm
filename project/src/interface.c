@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 20:59:30 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 23:58:07 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:43:32 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	fetch_interface(t_malcolm *malcolm)
 
 	if (getifaddrs(&ifaddr) == -1)
 		return (print_args_error("%sft_malcolm:%s error retrieving network interfaces\n", RD, NC));
-	
+
 	ifa = ifaddr;
 	while (ifa != NULL)
 	{
@@ -98,12 +98,12 @@ int	fetch_interface(t_malcolm *malcolm)
 				if (malcolm->interface.index == 0)
 				{
 					close(malcolm->spoof.socket_fd);
-					return (print_args_error("%sft_malcolm:%s could not fetch interface index", RD, NC));	
+					return (print_args_error("%sft_malcolm:%s could not fetch interface index", RD, NC));
 				}
 				if (malcolm->options.verbose)
 					print_interface(malcolm);
 				freeifaddrs(ifaddr);
-				return (VALID);	
+				return (VALID);
 			}
 		}
 		ifa = ifa->ifa_next;

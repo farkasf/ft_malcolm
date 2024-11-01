@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 05:35:04 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 06:58:25 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:45:40 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int set_timeout(int *i, int ac, char *value)
 {
 	int	timeout;
-	
+
 	if (*i + 1 < ac && ft_isnumber(value))
 	{
 		timeout = ft_atoi(value);

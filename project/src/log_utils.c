@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 03:06:43 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 06:26:34 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:48:58 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 void	format_mac(unsigned char *mac, char *out)
 {
 	snprintf(out, MAC_LENGTH, "%02x:%02x:%02x:%02x:%02x:%02x", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
-}
-
-uint32_t	format_ip_dec(unsigned char *ip)
-{
-	return ((uint32_t)ip[0] << 24) | ((uint32_t)ip[1] << 16) | ((uint32_t)ip[2] << 8) | (uint32_t)ip[3];
 }
 
 void	format_ip(unsigned char *ip, char *out)
@@ -36,4 +31,9 @@ void	format_host(unsigned char *ip, char *out)
 		ft_strlcpy(out, hostname->h_name, MAX_HOSTNAME);
 	else
 		snprintf(out, MAX_HOSTNAME, "%u.%u.%u.%u", ip[0], ip[1], ip[2], ip[3]);
+}
+
+uint32_t	format_ip_dec(unsigned char *ip)
+{
+	return ((uint32_t)ip[0] << 24) | ((uint32_t)ip[1] << 16) | ((uint32_t)ip[2] << 8) | (uint32_t)ip[3];
 }

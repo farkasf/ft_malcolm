@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 04:21:30 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 03:01:41 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:45:19 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static int	is_valid_ipv4(char *input)
 			if (i == octet)
 				return (NON_VALID);
 			dots += 1;
-			i++;	
+			i++;
 		}
 	}
 	if (dots != 3)

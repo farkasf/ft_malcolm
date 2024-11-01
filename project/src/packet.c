@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 02:53:13 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 08:36:41 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:47:13 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,22 @@ static void	fill_ethernet_header(unsigned char *buffer, t_malcolm *malcolm)
 		print_eth_info(eth_header);
 }
 
+static int	configure_sender(struct sockaddr_ll	*socket_addr, t_malcolm *malcolm)
+{
+	ft_memset(socket_addr, 0, sizeof(struct sockaddr_ll));
+	socket_addr->sll_ifindex = malcolm->interface.index;
+	if (malcolm->options.gratuitous)
+		ft_memset(socket_addr->sll_addr, 0xFF, MAC_BINLENGTH);
+	else
+		ft_memcpy(socket_addr->sll_addr, malcolm->target.mac_addr, MAC_BINLENGTH);
+	socket_addr->sll_family = AF_PACKET;
+	socket_addr->sll_pkttype = 0;
+	socket_addr->sll_protocol = htons(ETH_PROTOCOL_ARP);
+	socket_addr->sll_hatype = htons(ARPHRD_ETHER);
+	socket_addr->sll_halen = MAC_BINLENGTH;
+	return (VALID);
+}
+
 static void	prepare_packet(unsigned char *buffer, t_malcolm *malcolm)
 {
 	configure_sender(&malcolm->spoof.socket_addr, malcolm);
@@ -71,7 +87,7 @@ int	send_arp_reply(t_malcolm *malcolm)
 
 	dprintf(STDOUT_FILENO, "%sft_malcolm:%s preparing ARP reply packet for transmission\n\n", GR, NC);
 	prepare_packet(reply_buffer, malcolm);
-	dprintf(STDOUT_FILENO, 
+	dprintf(STDOUT_FILENO,
 		"%sft_malcolm:%s sending an ARP reply packet [%s]\n\n"
 		"%s%sPLEASE WAIT...%s\n\n"
 		, YL, NC, fetch_time(), PAD, BL, NC);

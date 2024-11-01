@@ -6,13 +6,13 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:48:56 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 07:56:34 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:50:19 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_malcolm.h"
 
-int	analyze_broadcast(t_malcolm *malcolm, unsigned char *buffer)
+static int	analyze_broadcast(t_malcolm *malcolm, unsigned char *buffer)
 {
 	struct ethhdr	*eth_header;
 
@@ -30,7 +30,7 @@ int	analyze_broadcast(t_malcolm *malcolm, unsigned char *buffer)
 	return (VALID);
 }
 
-int	listen_to_broadcast(t_malcolm *malcolm)
+static int	listen_to_broadcast(t_malcolm *malcolm)
 {
 	struct sockaddr_in	recv_addr;
 	socklen_t			addr_size;
@@ -75,12 +75,12 @@ int	mitm_run(t_malcolm *malcolm)
 
 	if (fetch_interface(malcolm) == NON_VALID)
 		return (print_args_error("%sft_malcolm:%s no matching interface found\n", RD, NC));
-	
+
 	if (setup_socket(malcolm) == NON_VALID)
 		return (NON_VALID);
 
 	if (!malcolm->options.gratuitous && listen_to_broadcast(malcolm) == NON_VALID)
-		return (NON_VALID);	
+		return (NON_VALID);
 
 	if (g_sig_status && send_arp_reply(malcolm) == NON_VALID)
 		return (NON_VALID);
