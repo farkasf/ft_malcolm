@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 23:31:22 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 04:39:50 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:33:19 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ int	configure_sender(struct sockaddr_ll	*socket_addr, t_malcolm *malcolm)
 {
 	ft_memset(socket_addr, 0, sizeof(struct sockaddr_ll));
 	socket_addr->sll_ifindex = malcolm->interface.index;
-	ft_memcpy(socket_addr->sll_addr, malcolm->target.mac_addr, MAC_BINLENGTH);
+	if (malcolm->options.gratuitous)
+		ft_memset(socket_addr->sll_addr, 0xFF, MAC_BINLENGTH);
+	else
+		ft_memcpy(socket_addr->sll_addr, malcolm->target.mac_addr, MAC_BINLENGTH);
 	socket_addr->sll_family = AF_PACKET;
 	socket_addr->sll_pkttype = 0;
 	socket_addr->sll_protocol = htons(ETH_PROTOCOL_ARP);

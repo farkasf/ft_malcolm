@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 02:53:13 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 07:56:37 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 08:36:41 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ static void	fill_ethernet_header(unsigned char *buffer, t_malcolm *malcolm)
 	struct ethhdr	*eth_header;
 
 	eth_header = (struct ethhdr *)buffer;
-	ft_memcpy(eth_header->h_dest, malcolm->target.mac_addr, MAC_BINLENGTH);
+	if (malcolm->options.gratuitous)
+		ft_memset(eth_header->h_dest, 0xFF, MAC_BINLENGTH);
+	else
+		ft_memcpy(eth_header->h_dest, malcolm->target.mac_addr, MAC_BINLENGTH);
 	ft_memcpy(eth_header->h_source, malcolm->source.mac_addr, MAC_BINLENGTH);
 	eth_header->h_proto = htons(ETH_PROTOCOL_ARP);
 	if (malcolm->options.verbose)
