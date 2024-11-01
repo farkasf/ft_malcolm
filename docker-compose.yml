@@ -6,46 +6,42 @@ services:
       context: .
       dockerfile: docker/Dockerfile.malcolm
     container_name: malcolm
+    privileged: true
     networks:
       malcolm_net:
         ipv4_address: 172.19.0.2
     volumes:
       - ./project:/project
-    cap_add:
-      - NET_ADMIN
 
   source:
     build:
       context: .
       dockerfile: docker/Dockerfile.containers
     container_name: source
+    privileged: true
     networks:
       malcolm_net:
         ipv4_address: 172.19.0.3
-    cap_add:
-      - NET_ADMIN
 
   target:
     build:
       context: .
       dockerfile: docker/Dockerfile.containers
     container_name: target
+    privileged: true
     networks:
       malcolm_net:
         ipv4_address: 172.19.0.4
-    cap_add:
-      - NET_ADMIN
 
-  destination:
+  dummy:
     build:
       context: .
       dockerfile: docker/Dockerfile.containers
-    container_name: destination
+    container_name: dummy
+    privileged: true
     networks:
       malcolm_net:
         ipv4_address: 172.19.0.5
-    cap_add:
-      - NET_ADMIN
 
 networks:
   malcolm_net:

@@ -8,7 +8,7 @@ all:
 	@echo "  make setup      - build images and create setup containers"
 	@echo "  make info       - show network info for the containers"
 	@echo "  make table      - display the ARP table of the target container"
-	@echo "  make ping       - ping the destination container from the target container"
+	@echo "  make ping       - ping the dummy container from the target container"
 	@echo "  make down       - stop and remove containers"
 	@echo "  make purge      - remove all containers, images, volumes, and networks"
 	@echo "  make all        - display this usage information"
@@ -26,8 +26,8 @@ info:
 	@docker exec -it source ip addr show eth0 | grep 'inet\|ether'
 	@echo "\n$(GR)Target container network info:$(NC)"
 	@docker exec -it target ip addr show eth0 | grep 'inet\|ether'
-	@echo "\n$(GR)Destination container network info:$(NC)"
-	@docker exec -it destination ip addr show eth0 | grep 'inet\|ether'
+	@echo "\n$(GR)Dummy container network info:$(NC)"
+	@docker exec -it dummy ip addr show eth0 | grep 'inet\|ether'
 	@echo
 
 table:
@@ -36,11 +36,11 @@ table:
 
 clean:
 	@echo "$(BL)Cleaning ARP table of the target...$(NC)"
-	docker exec -it --privileged target arp -d 172.19.0.5 || true
-	docker exec -it --privileged target arp -d 172.19.0.1 || true
+	docker exec -it target arp -d 172.19.0.5 || true
+	docker exec -it target arp -d 172.19.0.3 || true
 
 ping:
-	@echo "$(BL)Pinging test container from the target container...$(NC)"
+	@echo "$(BL)Pinging dummy container from the target container...$(NC)"
 	docker exec -it target ping -c 1 172.19.0.5
 
 down:

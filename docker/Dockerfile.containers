@@ -1,6 +1,12 @@
 FROM alpine:latest
 
 RUN apk update && \
-    apk add --no-cache iputils iproute2 tcpdump
+    apk add --no-cache iputils iproute2 tcpdump && \
+    echo "net.ipv4.conf.all.arp_accept=1" >> /etc/sysctl.conf && \
+    echo "net.ipv4.conf.default.arp_accept=1" >> /etc/sysctl.conf && \
+    echo "net.ipv4.conf.all.arp_ignore=0" >> /etc/sysctl.conf && \
+    echo "net.ipv4.conf.default.arp_ignore=0" >> /etc/sysctl.conf && \
+    echo "net.ipv4.conf.all.arp_announce=0" >> /etc/sysctl.conf && \
+    echo "net.ipv4.conf.default.arp_announce=0" >> /etc/sysctl.conf
 
-CMD ["sleep", "infinity"]
+CMD ["sh", "-c", "sysctl -p && sleep infinity"]
