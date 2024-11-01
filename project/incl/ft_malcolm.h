@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/26 22:11:09 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 23:55:57 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 05:05:13 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,20 @@
 # define NON_VALID      -1
 # define MSG_PRINTED    3
 
-# define IPv4_LENGTH    16
-# define IPv4_BINLENGTH 4
-# define MAC_LENGTH     18
-# define MAC_BINLENGTH  6
-# define MAX_HOSTNAME   253
-# define MAX_INTERFACE  16
+# define IPv4_LENGTH     16
+# define IPv4_BINLENGTH  4
+# define MAC_LENGTH      18
+# define MAC_BINLENGTH   6
+# define MAX_HOSTNAME    253
+# define MAX_INTERFACE   16
+
+# define FRAME_CHECK_SEQ     4
+# define ETH_PROTOCOL_ARP    0x0806
+# define ARP_HARDWARE_ETH    1
+# define ARP_PROTOCOL_IP     0x0800
+# define ARP_OPERATION_REPLY 2
+
+# define BROADCAST      "\xff\xff\xff\xff\xff\xff"
 
 extern volatile	sig_atomic_t g_sig_status;
 
@@ -75,6 +83,7 @@ typedef struct s_device
 typedef struct s_spoof
 {
 	struct sockaddr_ll	socket_addr;
+	unsigned char		ip_addr[IPv4_BINLENGTH];
 	int					socket_fd;
 }	t_spoof;
 
@@ -121,6 +130,7 @@ int			fetch_interface(t_malcolm *malcolm);
 int			mitm_run(t_malcolm *malcolm);
 
 int			setup_socket(t_malcolm *malcolm);
+int			configure_sender(struct sockaddr_ll	*socket_addr, t_malcolm *malcolm);
 
 void		format_mac(unsigned char *mac, char *out);
 void		format_ip(unsigned char *ip, char *out);
@@ -129,8 +139,10 @@ uint32_t	format_ip_dec(unsigned char *ip);
 
 void		print_interface(t_malcolm *malcolm);
 void		print_start(t_malcolm *malcolm);
-void		print_request(t_malcolm *malcolm);
+void		print_packet_info(t_packet *packet, char mode);
 void		print_eth_info(struct ethhdr *eth_header);
 void		print_arp_info(t_packet *packet);
+
+int			send_arp_reply(t_malcolm *malcolm);
 
 #endif

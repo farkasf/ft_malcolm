@@ -11,6 +11,8 @@ services:
         ipv4_address: 172.19.0.2
     volumes:
       - ./project:/project
+    cap_add:
+      - NET_ADMIN
 
   source:
     build:
@@ -20,6 +22,8 @@ services:
     networks:
       malcolm_net:
         ipv4_address: 172.19.0.3
+    cap_add:
+      - NET_ADMIN
 
   target:
     build:
@@ -29,6 +33,8 @@ services:
     networks:
       malcolm_net:
         ipv4_address: 172.19.0.4
+    cap_add:
+      - NET_ADMIN
 
   destination:
     build:
@@ -38,6 +44,8 @@ services:
     networks:
       malcolm_net:
         ipv4_address: 172.19.0.5
+    cap_add:
+      - NET_ADMIN
 
 networks:
   malcolm_net:

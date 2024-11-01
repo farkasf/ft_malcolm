@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 05:20:45 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/10/31 23:56:38 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/01 03:53:53 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	print_interface(t_malcolm *malcolm)
 	format_ip(malcolm->interface.netmask, netmask);
 	dprintf(STDOUT_FILENO, 
 		"%s%sINTERFACE INFO%s\n"
-		"%s* interface index: %u\n"
-		"%s* gateway: %s\n"
-		"%s* netmask: %s\n\n"
+		"%s* target interface index: %u\n"
+		"%s* target gateway: %s\n"
+		"%s* target netmask: %s\n\n"
 		, PAD, BL, NC, PAD, malcolm->interface.index, PAD, gateway, PAD, netmask);
 }
 
@@ -54,10 +54,10 @@ void	print_eth_info(struct ethhdr *eth_header)
 	format_mac(eth_header->h_dest, eth_t_mac);
 	dprintf(STDOUT_FILENO, 
 		"%s%sETHERNET HEADER%s\n"
-		"%s* source MAC address: %s\n"
 		"%s* target MAC address: %s\n"
+		"%s* source MAC address: %s\n"
 		"%s* protocol: 0x%04x\n\n"
-		, PAD, BL, NC, PAD, eth_s_mac, PAD, eth_t_mac, PAD, ntohs(eth_header->h_proto));
+		, PAD, BL, NC, PAD, eth_t_mac, PAD, eth_s_mac, PAD, ntohs(eth_header->h_proto));
 }
 
 void	print_arp_info(t_packet *packet)
@@ -73,7 +73,7 @@ void	print_arp_info(t_packet *packet)
 		, packet->header.ar_hln, PAD, packet->header.ar_pln, PAD, htons(packet->header.ar_op));
 }
 
-void	print_request(t_malcolm *malcolm)
+void	print_packet_info(t_packet *packet, char mode)
 {
 	char	source_mac[MAC_LENGTH];
 	char	source_ip[IPv4_LENGTH];
@@ -82,20 +82,21 @@ void	print_request(t_malcolm *malcolm)
 	char	source_name[MAX_HOSTNAME];
 	char	target_name[MAX_HOSTNAME];
 
-	format_mac(malcolm->packet.source_mac, source_mac);
-	format_mac(malcolm->packet.target_mac, target_mac);
-	format_ip(malcolm->packet.source_ip, source_ip);
-	format_ip(malcolm->packet.target_ip, target_ip);
-	format_host(malcolm->packet.source_ip, source_name);
-	format_host(malcolm->packet.target_ip, target_name);
+	format_mac(packet->source_mac, source_mac);
+	format_mac(packet->target_mac, target_mac);
+	format_ip(packet->source_ip, source_ip);
+	format_ip(packet->target_ip, target_ip);
+	format_host(packet->source_ip, source_name);
+	format_host(packet->target_ip, target_name);
+	if (mode == '1')
+		dprintf(STDOUT_FILENO, "%s%sARP REQUEST PACKET%s\n", PAD, BL, NC);
+	else
+		dprintf(STDOUT_FILENO, "%s%sARP REPLY PACKET%s\n", PAD, BL, NC);
 	dprintf(STDOUT_FILENO, 
-		"%s\nft_malcolm:%s an ARP request has been broadcast [%s]\n\n"
-		"%s%sARP PACKET%s\n"
 		"%s* source IP address: %s (%u) => %s\n"
 		"%s* source MAC address: %s\n"
 		"%s* target IP address: %s (%u) => %s\n"
 		"%s* target MAC address: %s\n\n"
-		, YL, NC, fetch_time(), PAD, BL, NC, PAD, source_ip, format_ip_dec(malcolm->packet.source_ip) \
-		, source_name, PAD, source_mac, PAD, target_ip, format_ip_dec(malcolm->packet.target_ip) \
-		, target_name, PAD, target_mac);
+		, PAD, source_ip, format_ip_dec(packet->source_ip), source_name, PAD, source_mac \
+		, PAD, target_ip, format_ip_dec(packet->target_ip), target_name, PAD, target_mac);
 }

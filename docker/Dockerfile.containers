@@ -1,6 +1,6 @@
 FROM alpine:latest
 
 RUN apk update && \
-    apk add --no-cache iputils iproute2
+    apk add --no-cache iputils iproute2 tcpdump
 
 CMD ["sleep", "infinity"]
