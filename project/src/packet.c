@@ -6,7 +6,7 @@
 /*   By: ffarkas <ffarkas@student.42prague.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 02:53:13 by ffarkas           #+#    #+#             */
-/*   Updated: 2024/11/01 08:47:13 by ffarkas          ###   ########.fr       */
+/*   Updated: 2024/11/02 02:56:11 by ffarkas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ int	send_arp_reply(t_malcolm *malcolm)
 		"%sft_malcolm:%s sending an ARP reply packet [%s]\n\n"
 		"%s%sPLEASE WAIT...%s\n\n"
 		, YL, NC, fetch_time(), PAD, BL, NC);
-	usleep(1500000);
+	sleep(2);
 	dprintf(STDOUT_FILENO, "%sft_malcolm:%s ARP reply packet sent successfully [%s]\n", YL, NC, fetch_time());
 	sent_bytes = sendto(malcolm->spoof.socket_fd, &reply_buffer, sizeof(reply_buffer), 0, \
 		(struct sockaddr *)&malcolm->spoof.socket_addr, sizeof(malcolm->spoof.socket_addr));
